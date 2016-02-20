@@ -1,16 +1,17 @@
 {
-  "name": "react-starter",
+  "name": "saltsource-website",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Isomorphic React/Redux App for the saltsource website",
+  "main": "server.bundle.js",
   "scripts": {
     "dev": "webpack-dev-server --progress --colors",
-    "start": "npm run build && node server.bundle.js",
+    "prestart": "npm run build",
+    "start": "node server.bundle.js",
     "build:client": "webpack --quiet",
     "build:server": "webpack --quiet --config webpack.server.config.js",
     "build": "npm run build:client && npm run build:server"
   },
-  "author": "",
+  "author": "Jared Anderson",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.5.1",

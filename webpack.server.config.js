@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var webpack = require('webpack');
 
 module.exports = {
 
@@ -30,18 +29,7 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        }),
-        new ExtractTextPlugin("public/style.css")
+        new ExtractTextPlugin("public/style2.css")
     ],
 
     module: {

@@ -13,7 +13,7 @@ import Helmet from 'react-helmet';
 
 export const app = express();
 
-
+app.set('port', process.env.PORT || 8080);
 
 app.use(compression())
 
@@ -70,7 +70,4 @@ function buildPage(innerHTML, head) {
     });
 }
 
-
-var PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () => console.log('Running on port ' + PORT)); // eslint-disable-line
+app.listen(app.get('port'), () => console.log('Running on port ' + app.get('port'))); // eslint-disable-line
