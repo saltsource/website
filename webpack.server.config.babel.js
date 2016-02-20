@@ -1,27 +1,26 @@
-var fs = require('fs');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+import fs from 'fs';
+import path from 'path';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
-module.exports = {
+export default {
 
-    entry: path.resolve(__dirname, 'server.js'),
+    entry: path.join(__dirname, 'server', 'server.js'),
 
     output: {
-        filename: 'server.bundle.js'
+        filename: 'server.bundle.js',
+        path: path.join(__dirname + "/server")
     },
 
     target: 'node',
 
     // keep node_module paths out of the bundle
     externals: fs.readdirSync(path.resolve(__dirname, 'node_modules'))
-    .concat([
-        'react-dom/server'
-    ])
-    .filter( s=> !/\.css$/.test(s) )
-    .reduce(function (ext, mod) {
-        ext[mod] = 'commonjs ' + mod
-        return ext
-    }, {}),
+        .concat(['react-dom/server'])
+        .filter( s=> !/\.css$/.test(s) )
+        .reduce( (ext, mod) => ({
+            ...ext,
+            [mod]: 'commonjs ' + mod
+        }), {}),
 
     node: {
         __filename: true,
@@ -29,7 +28,7 @@ module.exports = {
     },
 
     plugins: [
-        new ExtractTextPlugin("public/style2.css")
+        new ExtractTextPlugin("style.css")
     ],
 
     module: {

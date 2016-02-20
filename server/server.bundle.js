@@ -63,29 +63,9 @@
 
 	var _compression2 = _interopRequireDefault(_compression);
 
-	var _htmlMinifier = __webpack_require__(4);
+	var _reactHandler = __webpack_require__(4);
 
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _server = __webpack_require__(6);
-
-	var _reactRouter = __webpack_require__(7);
-
-	var _routes = __webpack_require__(8);
-
-	var _routes2 = _interopRequireDefault(_routes);
-
-	var _reactRedux = __webpack_require__(10);
-
-	var _store = __webpack_require__(33);
-
-	var _store2 = _interopRequireDefault(_store);
-
-	var _reactHelmet = __webpack_require__(29);
-
-	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
+	var _reactHandler2 = _interopRequireDefault(_reactHandler);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -93,48 +73,21 @@
 
 	app.set('port', process.env.PORT || 8080);
 
+	// middleware
 	app.use((0, _compression2.default)());
 
-	app.use(_express2.default.static(_path2.default.join(__dirname, 'public'), { index: false }));
+	// statics
+	app.use(_express2.default.static(_path2.default.join(__dirname, '..', 'public'), { index: false }));
 
-	app.get('*', function (req, res) {
-	    (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
+	// route handlers
+	app.get('*', _reactHandler2.default);
 
-	        if (err) {
-	            res.status(500).send(err.message);
-	        } else if (redirect) {
-	            res.redirect(redirect.pathname + redirect.search);
-	        } else if (props) {
-
-	            var html = (0, _server.renderToString)(_react2.default.createElement(
-	                _reactRedux.Provider,
-	                { store: _store2.default },
-	                _react2.default.createElement(_reactRouter.RouterContext, props)
-	            ));
-
-	            var head = _reactHelmet2.default.rewind();
-
-	            res.send(buildPage(html, head));
-	        } else {
-	            res.status(404).send('Not Found');
-	        }
-	    });
-	});
-
-	function buildPage(innerHTML, head) {
-	    var template = '\n        <!doctype html>\n        <html>\n            <head>\n                <meta charset="utf-8" />\n                ' + head.title + '\n                ' + head.meta + '\n                ' + head.link + '\n                <link href=/style.css rel=stylesheet>\n            </head>\n            <body>\n                <div id="app">' + innerHTML + '</div>\n                <script type=text/javascript src=/bundle.js charset=utf-8></script>\n            </body>\n        </html>\n    ';
-
-	    return (0, _htmlMinifier.minify)(template, {
-	        collapseWhitespace: true,
-	        removeComments: true,
-	        removeAttributeQuotes: true
-	    });
-	}
-
+	// listen for once, ok?
 	app.listen(app.get('port'), function () {
 	    return console.log('Running on port ' + app.get('port'));
-	}); // eslint-disable-line
-	/* WEBPACK VAR INJECTION */}.call(exports, ""))
+	} // eslint-disable-line
+	);
+	/* WEBPACK VAR INJECTION */}.call(exports, "server"))
 
 /***/ },
 /* 1 */
@@ -156,9 +109,65 @@
 
 /***/ },
 /* 4 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("html-minifier");
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(5);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _server = __webpack_require__(6);
+
+	var _reactRouter = __webpack_require__(7);
+
+	var _reactRedux = __webpack_require__(8);
+
+	var _reactHelmet = __webpack_require__(9);
+
+	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
+
+	var _store = __webpack_require__(10);
+
+	var _store2 = _interopRequireDefault(_store);
+
+	var _routes = __webpack_require__(13);
+
+	var _routes2 = _interopRequireDefault(_routes);
+
+	var _renderPage = __webpack_require__(36);
+
+	var _renderPage2 = _interopRequireDefault(_renderPage);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (req, res) {
+	    (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
+
+	        if (err) {
+	            res.status(500).send(err.message);
+	        } else if (redirect) {
+	            res.redirect(redirect.pathname + redirect.search);
+	        } else if (props) {
+
+	            var html = (0, _server.renderToString)(_react2.default.createElement(
+	                _reactRedux.Provider,
+	                { store: _store2.default },
+	                _react2.default.createElement(_reactRouter.RouterContext, props)
+	            ));
+
+	            var head = _reactHelmet2.default.rewind();
+
+	            res.send((0, _renderPage2.default)(html, head));
+	        } else {
+	            res.status(404).send('Not Found');
+	        }
+	    });
+	};
 
 /***/ },
 /* 5 */
@@ -180,6 +189,93 @@
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-redux");
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-helmet");
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _redux = __webpack_require__(11);
+
+	var _people = __webpack_require__(12);
+
+	var _people2 = _interopRequireDefault(_people);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var store = (0, _redux.combineReducers)({ people: _people2.default });
+
+	exports.default = (0, _redux.createStore)(store);
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux");
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = people;
+	var INIT_PEOPLE = exports.INIT_PEOPLE = Symbol('INIT_PEOPLE');
+	var FIND_PEOPLE = exports.FIND_PEOPLE = Symbol('FIND_PEOPLE');
+	var SELECT_PERSON = exports.SELECT_PERSON = Symbol('SELECT_PERSON');
+
+	function people() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { q: '', all: [], filtered: [] } : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case INIT_PEOPLE:
+	            return {
+	                q: '',
+	                all: action.people,
+	                filtered: []
+	            };
+
+	        case FIND_PEOPLE:
+	            return {
+	                all: [].concat(state.all),
+	                q: action.q,
+	                filtered: action.q.length > 1 ? state.all.filter(function (p) {
+	                    return ~p.toLowerCase().indexOf(action.q.toLowerCase());
+	                }) : []
+	            };
+
+	        case SELECT_PERSON:
+	            return {
+	                all: [].concat(state.all),
+	                q: action.q,
+	                filtered: []
+	            };
+
+	        default:
+	            return state;
+	    }
+	}
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -194,15 +290,15 @@
 
 	var _reactRouter = __webpack_require__(7);
 
-	var _App = __webpack_require__(9);
+	var _App = __webpack_require__(14);
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Home = __webpack_require__(28);
+	var _Home = __webpack_require__(32);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _About = __webpack_require__(31);
+	var _About = __webpack_require__(34);
 
 	var _About2 = _interopRequireDefault(_About);
 
@@ -218,7 +314,7 @@
 	exports.default = routes;
 
 /***/ },
-/* 9 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -231,19 +327,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(10);
+	var _reactRedux = __webpack_require__(8);
 
-	var _SiteHeader = __webpack_require__(11);
+	var _SiteHeader = __webpack_require__(15);
 
 	var _SiteHeader2 = _interopRequireDefault(_SiteHeader);
 
-	var _SiteFooter = __webpack_require__(20);
+	var _SiteFooter = __webpack_require__(24);
 
 	var _SiteFooter2 = _interopRequireDefault(_SiteFooter);
 
-	__webpack_require__(24);
+	__webpack_require__(28);
 
-	var _App = __webpack_require__(26);
+	var _App = __webpack_require__(30);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -271,13 +367,7 @@
 	exports.default = (0, _reactRedux.connect)()(App);
 
 /***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	module.exports = require("react-redux");
-
-/***/ },
-/* 11 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -290,15 +380,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SiteHeader = __webpack_require__(12);
+	var _SiteHeader = __webpack_require__(16);
 
 	var _SiteHeader2 = _interopRequireDefault(_SiteHeader);
 
-	var _SiteNav = __webpack_require__(16);
+	var _SiteNav = __webpack_require__(20);
 
 	var _SiteNav2 = _interopRequireDefault(_SiteNav);
 
-	var _classnames = __webpack_require__(19);
+	var _classnames = __webpack_require__(23);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -322,17 +412,17 @@
 	};
 
 /***/ },
-/* 12 */
+/* 16 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"header":"headeraZrKy","brand":"brand2Oc5f"};
 
 /***/ },
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -347,11 +437,11 @@
 
 	var _reactRouter = __webpack_require__(7);
 
-	var _SiteNav = __webpack_require__(17);
+	var _SiteNav = __webpack_require__(21);
 
 	var _SiteNav2 = _interopRequireDefault(_SiteNav);
 
-	var _classnames = __webpack_require__(19);
+	var _classnames = __webpack_require__(23);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -384,21 +474,21 @@
 	};
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"nav":"navN1PEr","link":"linkomIOD"};
 
 /***/ },
-/* 18 */,
-/* 19 */
+/* 22 */,
+/* 23 */
 /***/ function(module, exports) {
 
 	module.exports = require("classnames");
 
 /***/ },
-/* 20 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -411,15 +501,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SiteFooter = __webpack_require__(21);
+	var _SiteFooter = __webpack_require__(25);
 
 	var _SiteFooter2 = _interopRequireDefault(_SiteFooter);
 
-	var _classnames = __webpack_require__(19);
+	var _classnames = __webpack_require__(23);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _bcsalt = __webpack_require__(23);
+	var _bcsalt = __webpack_require__(27);
 
 	var _bcsalt2 = _interopRequireDefault(_bcsalt);
 
@@ -435,36 +525,36 @@
 	};
 
 /***/ },
-/* 21 */
+/* 25 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"footer":"footer3rNai","img":"imgimmf8"};
 
 /***/ },
-/* 22 */,
-/* 23 */
+/* 26 */,
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "1e7fcca255ddf7449f14728f4429ce18.gif";
 
 /***/ },
-/* 24 */
+/* 28 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 25 */,
-/* 26 */
+/* 29 */,
+/* 30 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"header":"header2bqMv","content":"contentNbIgF","footer":"footer1OQLo"};
 
 /***/ },
-/* 27 */,
-/* 28 */
+/* 31 */,
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -477,13 +567,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(10);
+	var _reactRedux = __webpack_require__(8);
 
-	var _reactHelmet = __webpack_require__(29);
+	var _reactHelmet = __webpack_require__(9);
 
 	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
 
-	var _meta = __webpack_require__(30);
+	var _meta = __webpack_require__(33);
 
 	var _meta2 = _interopRequireDefault(_meta);
 
@@ -515,13 +605,7 @@
 	exports.default = (0, _reactRedux.connect)()(Home);
 
 /***/ },
-/* 29 */
-/***/ function(module, exports) {
-
-	module.exports = require("react-helmet");
-
-/***/ },
-/* 30 */
+/* 33 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -535,7 +619,7 @@
 	};
 
 /***/ },
-/* 31 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -548,13 +632,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactHelmet = __webpack_require__(29);
+	var _reactHelmet = __webpack_require__(9);
 
 	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
 
-	var _reactRedux = __webpack_require__(10);
+	var _reactRedux = __webpack_require__(8);
 
-	var _meta = __webpack_require__(32);
+	var _meta = __webpack_require__(35);
 
 	var _meta2 = _interopRequireDefault(_meta);
 
@@ -601,7 +685,7 @@
 	exports.default = (0, _reactRedux.connect)()(About);
 
 /***/ },
-/* 32 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -615,79 +699,60 @@
 	};
 
 /***/ },
-/* 33 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _redux = __webpack_require__(34);
-
-	var _people = __webpack_require__(35);
-
-	var _people2 = _interopRequireDefault(_people);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var store = (0, _redux.combineReducers)({ people: _people2.default });
-
-	exports.default = (0, _redux.createStore)(store);
-
-/***/ },
-/* 34 */
-/***/ function(module, exports) {
-
-	module.exports = require("redux");
-
-/***/ },
-/* 35 */
-/***/ function(module, exports) {
-
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = people;
-	var INIT_PEOPLE = exports.INIT_PEOPLE = Symbol('INIT_PEOPLE');
-	var FIND_PEOPLE = exports.FIND_PEOPLE = Symbol('FIND_PEOPLE');
-	var SELECT_PERSON = exports.SELECT_PERSON = Symbol('SELECT_PERSON');
 
-	function people() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? { q: '', all: [], filtered: [] } : arguments[0];
-	    var action = arguments[1];
+	exports.default = function (innerHTML) {
+	    var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-	    switch (action.type) {
-	        case INIT_PEOPLE:
-	            return {
-	                q: '',
-	                all: action.people,
-	                filtered: []
-	            };
+	    var _ref$title = _ref.title;
+	    var title = _ref$title === undefined ? "" : _ref$title;
+	    var _ref$meta = _ref.meta;
+	    var meta = _ref$meta === undefined ? "" : _ref$meta;
+	    var _ref$links = _ref.links;
+	    var links = _ref$links === undefined ? "" : _ref$links;
 
-	        case FIND_PEOPLE:
-	            return {
-	                all: [].concat(state.all),
-	                q: action.q,
-	                filtered: action.q.length > 1 ? state.all.filter(function (p) {
-	                    return ~p.toLowerCase().indexOf(action.q.toLowerCase());
-	                }) : []
-	            };
+	    var t = template.replace('<!--REACT_TITLE-->', title).replace('<!--REACT_META-->', meta).replace('<!--REACT_LINKS-->', links).replace('<!--REACT_APP-->', innerHTML);
 
-	        case SELECT_PERSON:
-	            return {
-	                all: [].concat(state.all),
-	                q: action.q,
-	                filtered: []
-	            };
+	    return (0, _htmlMinifier.minify)(t, {
+	        collapseWhitespace: true,
+	        removeComments: true,
+	        removeAttributeQuotes: true
+	    });
+	};
 
-	        default:
-	            return state;
-	    }
-	}
+	var _htmlMinifier = __webpack_require__(37);
+
+	var _fs = __webpack_require__(38);
+
+	var _fs2 = _interopRequireDefault(_fs);
+
+	var _path = __webpack_require__(2);
+
+	var _path2 = _interopRequireDefault(_path);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var template = _fs2.default.readFileSync(_path2.default.resolve(__dirname, '../../public/index.html'), 'utf-8').toString();
+	/* WEBPACK VAR INJECTION */}.call(exports, "server/lib"))
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	module.exports = require("html-minifier");
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	module.exports = require("fs");
 
 /***/ }
 /******/ ]);

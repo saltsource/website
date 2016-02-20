@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "webpack-dev-server --progress --colors",
     "prestart": "npm run build",
-    "start": "node server.bundle.js",
+    "start": "node server/server.bundle.js",
     "build:client": "webpack --quiet",
-    "build:server": "webpack --quiet --config webpack.server.config.js",
+    "build:server": "webpack --quiet --config webpack.server.config.babel.js",
     "build": "npm run build:client && npm run build:server"
   },
   "author": "Jared Anderson",
