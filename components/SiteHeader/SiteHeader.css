@@ -1,0 +1,23 @@
+.header {
+    align-items: center;
+    background: #bada55;
+    color: #133;
+    display: flex;
+    justify-content: space-between;
+    padding: 2em 0;
+}
+
+.brand {
+    color: #007;
+    max-width: 10em;
+    text-decoration: none;
+
+    &:visited {
+        color: inherit;
+    }
+
+    &--active {
+        pointer-events: none;
+    }
+
+}

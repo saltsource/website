@@ -1,0 +1,12 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+.header,
+.content,
+.footer {
+    padding: 2em 1em;
+}
+.content {
+    min-height: 60vh;
+}

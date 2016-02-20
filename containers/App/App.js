@@ -1,25 +1,20 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import SiteHeader from '../../components/SiteHeader/SiteHeader.js';
+import SiteFooter from '../../components/SiteFooter/SiteFooter.js';
 import 'normalize.css';
-import styles from './style.scss';
+import styles from './App.scss';
 
 
 const App = ({children}) => (
     <div className={styles.app}>
 
-        <SiteHeader />
+        <SiteHeader className={styles.header} />
 
-        <div className={styles.wrapper}>
-            <nav className={styles.nav}>
-                <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/auto-completes">Auto Complete Demo</Link></li>
-                </ul>
-            </nav>
-
+        <div className={styles.content}>
             <main className={styles.main}>{children}</main>
         </div>
+
+        <SiteFooter className={styles.footer}  />
     </div>
 );
 

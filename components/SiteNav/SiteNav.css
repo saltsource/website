@@ -1,0 +1,21 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.link {
+    padding: 0 1em;
+    text-decoration: none;
+    color: #007;
+
+    &:visited {
+        color: inherit;
+    }
+
+    &--active.link {
+        color: #d00d00;
+        pointer-events: none;
+    }
+
+
+}
