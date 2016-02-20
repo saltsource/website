@@ -2,7 +2,6 @@ var fs = require('fs');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
-var tmpdir = require('os').tmpdir();
 
 module.exports = {
 
@@ -42,7 +41,7 @@ module.exports = {
                 warnings: false
             }
         }),
-        new ExtractTextPlugin(tmpdir + "style.css")
+        new ExtractTextPlugin("public/style.css")
     ],
 
     module: {
