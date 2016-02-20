@@ -52,6 +52,7 @@ function buildPage(innerHTML, head) {
             <head>
                 <meta charset="utf-8" />
                 ${head.title}
+                <meta name="viewport" content="width=device-width, initial-scale=1">
                 ${head.meta}
                 ${head.link}
                 <link href=/style.css rel=stylesheet>
