@@ -9,6 +9,7 @@
 
 .brand {
     color: #007;
+    /*display: flex;*/
     max-width: 10em;
     text-decoration: none;
 
@@ -16,8 +17,15 @@
         color: inherit;
     }
 
-    &--active {
-        pointer-events: none;
+}
+
+.img {
+    max-width: 3em;
+    transition: transform .3s linear;
+
+    &:hover {
+        transform: rotateZ(5deg);
     }
 
+    /*float: right;*/
 }
