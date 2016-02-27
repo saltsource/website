@@ -12,8 +12,8 @@ export default {
                 test: /\.s?css$/,
                 loader: ExtractTextPlugin.extract(
                     "style-loader",
-                    "css-loader?modules&importLoaders=1&localIdentName=[local]-[hash:base64:5]!postcss-loader",
-                    "sass-loader"
+                    "css-loader?modules&importLoaders=1&localIdentName=[local]-[hash:base64:5]",
+                    "postcss-loader"
                 )
             },
 

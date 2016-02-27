@@ -3,11 +3,3 @@
     justify-content: flex-end;
     padding: 2em;
 }
-
-.img {
-    transition: transform .3s linear;
-    &:hover {
-        transform: rotateZ(5deg);
-    }
-    /*float: right;*/
-}

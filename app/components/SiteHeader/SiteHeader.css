@@ -1,6 +1,6 @@
 .header {
     align-items: center;
-    background: #bada55;
+    background: var(--blue, navy);
     color: #133;
     display: flex;
     justify-content: space-between;
@@ -9,23 +9,14 @@
 
 .brand {
     color: #007;
-    /*display: flex;*/
     max-width: 10em;
     text-decoration: none;
-
-    &:visited {
-        color: inherit;
-    }
-
 }
 
 .img {
     max-width: 3em;
     transition: transform .3s linear;
-
-    &:hover {
-        transform: rotateZ(5deg);
-    }
-
-    /*float: right;*/
+}
+.img:hover {
+    transform: rotateZ(5deg);
 }

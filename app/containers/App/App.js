@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import SiteHeader from '../../components/SiteHeader/SiteHeader.js';
 import SiteFooter from '../../components/SiteFooter/SiteFooter.js';
 import 'normalize.css';
+import './theme.css';
 import styles from './App.scss';
 
 

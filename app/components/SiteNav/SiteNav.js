@@ -9,15 +9,23 @@ export default ({className}) => (
             className={styles.link}
             activeClassName={styles['link--active']}
         >
-            Home
+            home
         </IndexLink>
+
+        <Link
+            to="/services"
+            className={styles.link}
+            activeClassName={styles['link--active']}
+        >
+            services
+        </Link>
 
         <Link
             to="/about"
             className={styles.link}
             activeClassName={styles['link--active']}
         >
-            About
+            about
         </Link>
     </nav>
 );
