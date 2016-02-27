@@ -2,9 +2,11 @@ import express from 'express';
 import path from 'path';
 import compression from 'compression';
 import helmet from 'helmet';
+import setResponseCache from './modules/set-response-cache';
 
 // this module is built by npm script...
 import reactHandler from './modules/react-server-app';
+
 
 // create express app...
 export const app = express();
@@ -12,7 +14,11 @@ export const app = express();
 // middleware
 app.use(compression());
 app.use(helmet());
-app.use(express.static(path.join(__dirname, '..', 'static'), {index: false}));
+app.use(express.static(path.join(__dirname, '..', 'static'), {
+    index: false,
+    maxAge: 1000*60*60
+}));
+app.use(setResponseCache());
 
 // handle routes via react...
 app.get('*', reactHandler);
