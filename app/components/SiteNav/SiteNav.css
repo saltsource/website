@@ -3,18 +3,18 @@
     justify-content: space-between;
 }
 
-.link,
-.link:visited {
+.link {
     color: var(--white, white);
     padding: 0 1em;
     text-decoration: none;
-}
 
-.link:hover {
-    color: var(--dark-blue, darkblue);
-}
+    &:hover {
+        color: var(--dark-blue, darkblue);
+    }
 
-.link--active.link {
-    color: var(--light-blue, lightblue);
-    pointer-events: none;
+    &--active.link {
+        color: var(--light-blue, lightblue);
+        pointer-events: none;
+    }
+
 }

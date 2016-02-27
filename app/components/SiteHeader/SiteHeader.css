@@ -16,7 +16,8 @@
 .img {
     max-width: 3em;
     transition: transform .3s linear;
-}
-.img:hover {
-    transform: rotateZ(5deg);
+
+    &:hover {
+        transform: rotateZ(5deg);
+    }
 }
