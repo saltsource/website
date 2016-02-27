@@ -3,6 +3,11 @@ import cssnext from 'postcss-cssnext';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import webpack from 'webpack'
 
+import cssVars from './app/theme.js';
+
+
+
+
 export default {
 
     module: {
@@ -47,14 +52,7 @@ export default {
         cssnext({
             features: {
                 customProperties: {
-                    variables: {
-                      "--white": "#E8F3EE",
-                      "--orange": "#D0804C",
-                      "--blue": "#2899A7",
-                      "--light-blue": "#60C4D8",
-                      "--dark-blue": "#18505A",
-                      "--black": "#007"
-                    }
+                    variables: cssVars
                 }
             }
         }),
