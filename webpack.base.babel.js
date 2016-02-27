@@ -1,7 +1,6 @@
 import cssnano from 'cssnano';
 import cssnext from 'postcss-cssnext';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import precss from 'precss';
 import webpack from 'webpack'
 
 export default {
@@ -12,8 +11,7 @@ export default {
                 test: /\.s?css$/,
                 loader: ExtractTextPlugin.extract(
                     "style-loader",
-                    "css-loader?modules&importLoaders=1&localIdentName=[local]-[hash:base64:5]",
-                    "postcss-loader"
+                    "css-loader?modules&importLoaders=1&localIdentName=[local]-[hash:base64:5]!postcss-loader"
                 )
             },
 
@@ -46,9 +44,20 @@ export default {
 
     postcss : [
 
-        precss(),
-
-        cssnext(),
+        cssnext({
+            features: {
+                customProperties: {
+                    variables: {
+                      "--white": "#E8F3EE",
+                      "--orange": "#D0804C",
+                      "--blue": "#2899A7",
+                      "--light-blue": "#60C4D8",
+                      "--dark-blue": "#18505A",
+                      "--black": "#007"
+                    }
+                }
+            }
+        }),
 
         cssnano({
             autoprefixer : {
