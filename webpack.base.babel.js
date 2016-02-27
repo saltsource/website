@@ -1,4 +1,5 @@
 import cssnano from 'cssnano';
+import cssnext from 'postcss-cssnext';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import precss from 'precss';
 import webpack from 'webpack'
@@ -46,6 +47,8 @@ export default {
     postcss : [
 
         precss(),
+
+        cssnext(),
 
         cssnano({
             autoprefixer : {
