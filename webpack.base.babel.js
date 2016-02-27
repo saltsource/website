@@ -1,22 +1,17 @@
-import path from 'path';
 import cssnano from 'cssnano';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import precss from 'precss';
-import webpack from 'webpack';
+import webpack from 'webpack'
 
 export default {
-    entry: "./app.js",
-    output: {
-        path: path.join(__dirname, 'public'),
-        filename: "bundle.js"
-    },
+
     module: {
         loaders: [
             {
                 test: /\.s?css$/,
                 loader: ExtractTextPlugin.extract(
                     "style-loader",
-                    "css-loader?modules&importLoaders=1&localIdentName=[local][hash:base64:5]!postcss-loader",
+                    "css-loader?modules&importLoaders=1&localIdentName=[local]-[hash:base64:5]!postcss-loader",
                     "sass-loader"
                 )
             },
@@ -24,15 +19,12 @@ export default {
             {
                 test : /\.jsx?$/,
                 exclude : /(node_modules|bower_components)/,
-                loader  : 'babel',
-                query: {
-                    presets: ['react', 'es2015']
-                }
+                loader  : 'babel'
             },
 
             {
                 test: /\.(png|jpe?g|gif|svg|mp3|mpe?g)$/,
-                loader: "file-loader"
+                loader: "file-loader?name=assets/[name]-[hash:2].[ext]"
             }
 
         ]
@@ -40,19 +32,12 @@ export default {
     },
 
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
+        new ExtractTextPlugin("app.css"),
         new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        }),
-        new ExtractTextPlugin("style.css")
+            'process.env.NODE_ENV': `"${process.env.NODE_ENV||"production"}"`
+        })
     ],
+
 
     cssLoader: {
         modules: true
@@ -74,15 +59,5 @@ export default {
             }
 
         })
-    ],
-
-    devServer: {
-        contentBase: path.join(__dirname, 'public'),
-        historyApiFallback: true,
-        hot: false,
-        inline: true,
-        progress: true,
-        compress: true
-    }
-
+    ]
 };
